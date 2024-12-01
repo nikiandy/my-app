@@ -18,7 +18,7 @@ export default function ManagerDashboard() {
 
   // Fetch order data from the API
   useEffect(() => {
-    fetch("/api/orders")
+    fetch("/api/getOrders")
       .then((response) => response.json())
       .then((data) => {
         setOrders(data);
