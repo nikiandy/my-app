@@ -1,45 +1,62 @@
 export async function GET(req, res) {
-  // Make a note we are on
-
-  // the api. This goes to the console.
-
   console.log("in the putInCart api page");
 
-  // get the values
-
-  // that were sent across to us.
-
   const { searchParams } = new URL(req.url);
-
   const pname = searchParams.get("pname");
 
-  console.log(pname);
-
-  // =================================================
+  if (!pname) {
+    return Response.json(
+      { error: "Product name is required." },
+      { status: 400 }
+    );
+  }
 
   const { MongoClient } = require("mongodb");
-
   const url = process.env.DB_ADDRESS;
-
   const client = new MongoClient(url);
+  const dbName = "app";
 
-  const dbName = "app"; // database name
+  try {
+    await client.connect();
+    console.log("Connected successfully to server");
 
-  await client.connect();
+    const db = client.db(dbName);
+    const productsCollection = db.collection("products");
+    const cartCollection = db.collection("cart");
 
-  console.log("Connected successfully to server");
+    // Fetch the product details from the products collection
+    const product = await productsCollection.findOne({ pname });
 
-  const db = client.db(dbName);
+    if (!product) {
+      return Response.json({ error: "Product not found." }, { status: 404 });
+    }
 
-  const collection = db.collection("cart"); // collection name
+    // Check if the product is already in the cart for the user
+    const existingCartItem = await cartCollection.findOne({
+      pname: product.pname,
+    });
 
-  var myobj = { pname: pname, username: "sample@test.com" };
+    if (existingCartItem) {
+      // If the product already exists in the cart, increment the quantity
+      await cartCollection.updateOne(
+        { _id: existingCartItem._id },
+        { $inc: { quantity: 1 } }
+      );
+    } else {
+      // Add the product to the cart with an initial quantity of 1
+      const cartItem = {
+        pname: product.pname,
+        price: product.price,
+        quantity: 1,
+      };
+      await cartCollection.insertOne(cartItem);
+    }
 
-  const insertResult = await collection.insertOne(myobj);
-
-  //==========================================================
-
-  // at the end of the process we need to send something back.
-
-  return Response.json({ data: "" + "inserted" + "" });
+    return Response.json({ message: "Product added to cart." });
+  } catch (error) {
+    console.error("Error adding product to cart:", error);
+    return Response.json({ error: "Internal server error." }, { status: 500 });
+  } finally {
+    await client.close();
+  }
 }
