@@ -9,7 +9,7 @@ export async function GET() {
   try {
     await client.connect();
     const db = client.db(dbName);
-    const cart = await db.collection("cart").find({}).toArray();
+    const cart = await db.collection("shopping_cart").find({}).toArray();
     return NextResponse.json({ cart });
   } finally {
     await client.close();
@@ -28,7 +28,7 @@ export async function PUT(req) {
   try {
     await client.connect();
     const db = client.db(dbName);
-    const cart = db.collection("cart");
+    const cart = db.collection("shopping_cart");
 
     if (action === "increase") {
       await cart.updateOne(
