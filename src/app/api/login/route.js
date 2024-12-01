@@ -30,8 +30,8 @@ export async function POST(req) {
       );
     }
 
-    // Return the account type (e.g., "manager" or "customer")
-    return NextResponse.json({ accountType: user.accountType });
+    // Return the account type (fix field name to match your database)
+    return NextResponse.json({ accountType: user.acc_type }); // Correct field name
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(
