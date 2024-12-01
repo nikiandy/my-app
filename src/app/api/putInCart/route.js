@@ -11,6 +11,7 @@ export async function GET(req, res) {
     );
   }
 
+  // Connect to the MongoDB database
   const { MongoClient } = require("mongodb");
   const url = process.env.DB_ADDRESS;
   const client = new MongoClient(url);
