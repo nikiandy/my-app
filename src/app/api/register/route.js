@@ -18,7 +18,7 @@ export async function POST(req) {
   try {
     await client.connect();
     const db = client.db(dbName);
-    const users = db.collection("users");
+    const users = db.collection("login");
 
     // Check if the user already exists
     const existingUser = await users.findOne({ email });

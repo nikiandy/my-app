@@ -18,7 +18,7 @@ export async function POST(req) {
   try {
     await client.connect();
     const db = client.db(dbName);
-    const users = db.collection("users");
+    const users = db.collection("login");
 
     // Find the user in the database
     const user = await users.findOne({ email });
