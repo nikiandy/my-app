@@ -27,8 +27,13 @@ export default function ViewCartPage() {
     fetch("/api/cart")
       .then((res) => res.json())
       .then((data) => {
-        setCart(data.cart);
-        calculateTotal(data.cart);
+        const validatedCart = data.cart.map((item) => ({
+          ...item,
+          price: parseFloat(item.price) || 0, // Convert price to number
+          quantity: item.quantity || 0,
+        }));
+        setCart(validatedCart);
+        calculateTotal(validatedCart);
       })
       .catch((error) => console.error("Error fetching cart:", error));
   }, []);
@@ -36,7 +41,7 @@ export default function ViewCartPage() {
   // Calculate total price
   const calculateTotal = (cart) => {
     const total = cart.reduce(
-      (sum, item) => sum + item.quantity * item.price,
+      (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
       0
     );
     setTotalPrice(total);
@@ -64,29 +69,20 @@ export default function ViewCartPage() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setCart(data.cart);
-        calculateTotal(data.cart);
+        const validatedCart = data.cart.map((item) => ({
+          ...item,
+          price: parseFloat(item.price) || 0,
+          quantity: item.quantity || 0,
+        }));
+        setCart(validatedCart);
+        calculateTotal(validatedCart);
       })
       .catch((error) => console.error("Error updating cart:", error));
   };
 
-  // Checkout and create an order
+  // Checkout
   const handleCheckout = () => {
-    fetch("/api/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cart, totalPrice }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          router.push("/checkout"); // Navigate to checkout page
-        } else {
-          console.error("Error during checkout");
-        }
-      })
-      .catch((error) => console.error("Error during checkout:", error));
+    router.push("/checkout");
   };
 
   return (
@@ -124,9 +120,9 @@ export default function ViewCartPage() {
               <TableBody>
                 {cart.map((item) => (
                   <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>€{item.price.toFixed(2)}</TableCell>
-                    <TableCell>{item.quantity}</TableCell>
+                    <TableCell>{item.name || "Unknown Product"}</TableCell>
+                    <TableCell>€{parseFloat(item.price).toFixed(2)}</TableCell>
+                    <TableCell>{item.quantity || 0}</TableCell>
                     <TableCell>
                       <IconButton onClick={() => increaseQuantity(item.id)}>
                         <AddIcon />
@@ -148,7 +144,7 @@ export default function ViewCartPage() {
                       </IconButton>
                     </TableCell>
                     <TableCell>
-                      €{(item.price * item.quantity).toFixed(2)}
+                      €{(parseFloat(item.price) * item.quantity).toFixed(2)}
                     </TableCell>
                   </TableRow>
                 ))}
