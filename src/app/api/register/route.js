@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 
 export async function POST(req) {
-  const { name, email, password } = await req.json();
+  const { name, email, password, acc_type } = await req.json();
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !acc_type) {
     return NextResponse.json(
       { error: "All fields are required." },
       { status: 400 }
@@ -29,8 +29,8 @@ export async function POST(req) {
       );
     }
 
-    // Insert the new user
-    const result = await users.insertOne({ name, email, password });
+    // Insert the new user with account type
+    const result = await users.insertOne({ name, email, password, acc_type });
     return NextResponse.json({ message: "User registered successfully." });
   } catch (error) {
     console.error(error);

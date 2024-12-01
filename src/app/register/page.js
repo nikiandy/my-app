@@ -1,21 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    acc_type: "", // New field for account type
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +35,12 @@ export default function RegisterPage() {
     setSuccess(false);
 
     // Perform form validation
-    if (!formData.name || !formData.email || !formData.password) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.acc_type
+    ) {
       setError("All fields are required.");
       return;
     }
@@ -57,11 +66,16 @@ export default function RegisterPage() {
         name: "",
         email: "",
         password: "",
+        acc_type: "",
       });
       setSuccess(true);
     } catch (error) {
       setError("An error occurred. Please try again later.");
     }
+  };
+
+  const handleLoginRedirect = () => {
+    router.push("/login");
   };
 
   return (
@@ -105,6 +119,18 @@ export default function RegisterPage() {
           fullWidth
           required
         />
+        <TextField
+          label="Account Type"
+          name="acc_type"
+          select
+          value={formData.acc_type}
+          onChange={handleChange}
+          fullWidth
+          required
+        >
+          <MenuItem value="manager">Manager</MenuItem>
+          <MenuItem value="customer">Customer</MenuItem>
+        </TextField>
         {error && <Alert severity="error">{error}</Alert>}
         {success && (
           <Alert severity="success">
@@ -113,6 +139,15 @@ export default function RegisterPage() {
         )}
         <Button type="submit" variant="contained" color="primary" fullWidth>
           Register
+        </Button>
+        <Button
+          variant="outlined"
+          color="secondary"
+          fullWidth
+          style={{ marginTop: "10px" }}
+          onClick={handleLoginRedirect}
+        >
+          Go to Login
         </Button>
       </Box>
     </Container>
