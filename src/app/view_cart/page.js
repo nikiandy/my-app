@@ -120,7 +120,7 @@ export default function ViewCartPage() {
               <TableBody>
                 {cart.map((item) => (
                   <TableRow key={item.id}>
-                    <TableCell>{item.name || "Unknown Product"}</TableCell>
+                    <TableCell>{item.pname || "Unknown Product"}</TableCell>
                     <TableCell>€{parseFloat(item.price).toFixed(2)}</TableCell>
                     <TableCell>{item.quantity || 0}</TableCell>
                     <TableCell>
