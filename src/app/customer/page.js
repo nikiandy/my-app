@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
 import { useState, useEffect } from "react";
+import NavBar from "@/components/NavBar";
 
 export default function CustomerPage() {
   const [products, setProducts] = useState(null);

@@ -1,5 +1,6 @@
 "use client";
 
+import NavBar from "@/components/NavBar";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Container from "@mui/material/Container";
@@ -46,42 +47,75 @@ export default function CheckoutPage() {
   };
 
   return (
-    <Container maxWidth="sm" style={{ marginTop: "50px" }}>
-      <Typography variant="h4" component="h1" align="center" gutterBottom>
-        Checkout
-      </Typography>
-      <Typography variant="body1" align="center" gutterBottom>
-        Confirm your order to finalize the purchase and receive a confirmation
-        email.
-      </Typography>
-      {error && (
-        <Alert severity="error" style={{ marginTop: "20px" }}>
-          {error}
-        </Alert>
-      )}
-      {success && (
-        <Alert severity="success" style={{ marginTop: "20px" }}>
-          Order placed successfully! Redirecting to your dashboard...
-        </Alert>
-      )}
-      {loading ? (
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
-          <CircularProgress />
-          <Typography variant="body2" style={{ marginTop: "10px" }}>
-            Placing your order...
-          </Typography>
-        </div>
-      ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          style={{ marginTop: "20px" }}
-          onClick={handleConfirmOrder}
+    <div
+      style={{
+        backgroundColor: "#f5f5f5", // Light background color
+        color: "#333333", // Darker text color
+        minHeight: "100vh",
+        paddingTop: "20px",
+      }}
+    >
+      <NavBar />
+      <Container
+        maxWidth="sm"
+        style={{
+          backgroundColor: "#ffffff", // White container background
+          borderRadius: "8px",
+          padding: "30px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          marginTop: "50px",
+        }}
+      >
+        <Typography
+          variant="h4"
+          component="h1"
+          align="center"
+          gutterBottom
+          style={{ color: "#333333" }} // Darker heading color
         >
-          Confirm Order
-        </Button>
-      )}
-    </Container>
+          Checkout
+        </Typography>
+        <Typography
+          variant="body1"
+          align="center"
+          gutterBottom
+          style={{ color: "#555555" }} // Slightly darker text
+        >
+          Confirm your order to finalize the purchase and receive a confirmation
+          email.
+        </Typography>
+        {error && (
+          <Alert severity="error" style={{ marginTop: "20px" }}>
+            {error}
+          </Alert>
+        )}
+        {success && (
+          <Alert severity="success" style={{ marginTop: "20px" }}>
+            Order placed successfully! Redirecting to your dashboard...
+          </Alert>
+        )}
+        {loading ? (
+          <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <CircularProgress />
+            <Typography
+              variant="body2"
+              style={{ marginTop: "10px", color: "#555555" }}
+            >
+              Placing your order...
+            </Typography>
+          </div>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            style={{ marginTop: "20px" }}
+            onClick={handleConfirmOrder}
+          >
+            Confirm Order
+          </Button>
+        )}
+      </Container>
+    </div>
   );
 }

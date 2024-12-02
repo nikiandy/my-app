@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
+import NavBar from "@/components/NavBar";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });

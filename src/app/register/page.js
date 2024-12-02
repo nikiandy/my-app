@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import MenuItem from "@mui/material/MenuItem";
+import NavBar from "@/components/NavBar";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({

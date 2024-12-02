@@ -11,6 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
+import NavBar from "@/components/NavBar";
 
 export default function ManagerDashboard() {
   const [orders, setOrders] = useState(null);
